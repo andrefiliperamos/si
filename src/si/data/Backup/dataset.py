@@ -27,7 +27,7 @@ class Dataset:
         if features is not None and len(X[0]) != len(features):
             raise ValueError("Number of features must match the number of columns in X")
         if features is None:
-            features = [f"feat_{str(i)}" for i in range(X.shape [1])]
+            features = [f"feat_{str(i)}" for i in range(X.shape[1])]
         if y is not None and label is None:
             label = "y"
         self.X = X
@@ -35,38 +35,23 @@ class Dataset:
         self.features = features
         self.label = label
 
-
+    #def dropna(self):
     def dropna(self):
         indices = []
-        for i in range(len(self.X)):
+        for i in range (len(self.X)):
+
             for j in range(len(self.X[0])):
-                if np.isnan(self.X[i, j]):
+
+                if self.X[i,j] == np.NAN:
+
                     indices.append(i)
                     break
-        self.X = np.delete(self.X, indices, 0)
-        self.y = np.delete(self.y, indices)
 
-        
-    def fillna(self, value):
-        indices = []
-        for i in range(len(self.X)):
-            for j in range(len(self.X[0])):                
-                if np.isnan(self.X[i, j]):
-                    if value == "mean":
-                        self.X[i, j] = self.get_mean()[j]
-                    elif value == "median":
-                        self.X[i, j] = self.get_median()[j]
-                    elif isinstance(value, float) or isinstance(value, int):
-                        self.X[i, j] = value
+        np.delete(self.X, indices, 0)  
+        np.delete(self.y, indices, 0)
+    
+        #return self
 
-                        
-    def remove_by_index(self, index):
-        if index < len(self.X):
-            self.X = np.delete(self.X, index, 0)
-            self.y = np.delete(self.y, index)
-
-
-                            
     def shape(self) -> Tuple[int, int]:
         """
         Returns the shape of the dataset
@@ -94,13 +79,6 @@ class Dataset:
         """
         if self.has_label():
             return np.unique(self.y)
-        else:
-            raise ValueError("Dataset does not have a label")
-    
-    def get_classes_with_count(self):
-         
-        if self.has_label():
-            return np.unique(self.y, return_counts=True)
         else:
             raise ValueError("Dataset does not have a label")
 
@@ -164,8 +142,11 @@ class Dataset:
             "var": self.get_variance()
         }
         return pd.DataFrame.from_dict(data, orient="index", columns=self.features)
+    
+    #@classmethod
+   
 
-    @classmethod
+    
     def from_dataframe(cls, df: pd.DataFrame, label: str = None):
         """
         Creates a Dataset object from a pandas DataFrame
@@ -236,11 +217,16 @@ class Dataset:
         X = np.random.rand(n_samples, n_features)
         y = np.random.randint(0, n_classes, n_samples)
         return cls(X, y, features=features, label=label)
+    
+    
+
+
+
 
 
 if __name__ == '__main__':
-    X = np.array([[1, 2, 3], [4, 5, np.nan], [77, np.nan, 99]])
-    y = np.array([1, 2, 33])
+    X = np.array([[1, 2, 3], [4, 5, 6]])
+    y = np.array([1, 2])
     features = np.array(['a', 'b', 'c'])
     label = 'y'
     dataset = Dataset(X, y, features, label)
@@ -253,20 +239,3 @@ if __name__ == '__main__':
     print(dataset.get_min())
     print(dataset.get_max())
     print(dataset.summary())
-    print("Dropna")
-    print(dataset.dropna())
-    print("Fim Dropna")
-    print(dataset.X)
-    print(dataset.y)
-    print(dataset.fillna("mean"))
-    print(dataset.X)
-
-    dataset1 = dataset
-    dataset1.remove_by_index(0)
-    print (dataset1.X)
-    print (dataset1.y)
-
-    dataset2 = dataset
-    dataset2.remove_by_index(3)
-    print (dataset2.X)
-    print (dataset2.y)
