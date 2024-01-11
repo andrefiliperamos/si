@@ -1,15 +1,43 @@
-def entropy_impurity(y):
+import numpy as np
 
-    '''
-    • arguments:
-    - y – the labels of the dataset
-    • expected output:
-    - float – the impurity of the dataset using the entropy
-    • algorithm:
-    - Get unique classes and their counts
-    - Compute impurity with entropy
-    '''
 
-    
+def entropy_impurity(y: np.ndarray) -> float:
+    """
+    Calculates the impurity of a dataset using entropy.
 
-def gini_impurity():
+    Parameters
+    ----------
+    y: np.ndarray
+        The labels of the dataset.
+
+    Returns
+    -------
+    float
+        The impurity of the dataset.
+    """
+    classes, counts = np.unique(y, return_counts=True)
+    impurity = 0
+    for i in range(len(classes)):
+        impurity -= (counts[i] / len(y)) * np.log2(counts[i] / len(y))
+    return impurity
+
+
+def gini_impurity(y: np.ndarray) -> float:
+    """
+    Calculates the impurity of a dataset using the Gini index.
+
+    Parameters
+    ----------
+    y: np.ndarray
+        The labels of the dataset.
+
+    Returns
+    -------
+    float
+        The impurity of the dataset.
+    """
+    classes, counts = np.unique(y, return_counts=True)
+    impurity = 1
+    for i in range(len(classes)):
+        impurity -= (counts[i] / len(y)) ** 2
+    return impurity

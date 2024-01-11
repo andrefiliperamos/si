@@ -116,8 +116,7 @@ indices;
 - Return the training and testing datasets.
 '''
 
-caminho = 'C:\\Percurso Académico\\Mestrado em Bioinformática - UMinho\\2023-2024\\02 Disciplinas\\1º Semestre\\03 Sistemas Inteligentes para a Bioinformática\\0Base de Dados\\TesteExercicio6.csv'
-#caminho = 'C:\\Percurso Académico\\Mestrado em Bioinformática - UMinho\\2023-2024\\02 Disciplinas\\1º Semestre\\03 Sistemas Inteligentes para a Bioinformática\\0Base de Dados\\iris.csv'
+caminho = 'C:\\Percurso Académico\\Mestrado em Bioinformática - UMinho\\2023-2024\\02 Disciplinas\\1º Semestre\\03 Sistemas Inteligentes para a Bioinformática\\0Base de Dados\\iris.csv'
 dados = read_csv(caminho, ',', True, True)
 (train, teste) = stratified_train_test_split(dados)
 print("Train:")
